@@ -1,4 +1,4 @@
-*Based on the Mozillia UI Design specs.*
+*Based on the Mozilla UI Design specs.*
 # UI Designs
 The UI design has the following goals:
 * 1-2 taps for most frequent activites
