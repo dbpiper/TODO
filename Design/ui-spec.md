@@ -22,7 +22,7 @@ at the right.
 There is a floating action button at the bottom right of the screen
 which is used to add new items.
 
-(https://raw.githubusercontent.com/dbpiper/TODO/master/Design/Images/Main_Screen.jpg)
+![alt](https://raw.githubusercontent.com/dbpiper/TODO/master/Design/Images/Main_Screen.jpg "Main Screen")
 
 ### Add Item Screen
 The add new item screen is shown below.
@@ -34,4 +34,4 @@ the title of the todo item.
 Underneath the actionbar is a editable text-field for adding the description
 of the todo item.
 
-(https://raw.githubusercontent.com/dbpiper/TODO/master/Design/Images/Add_Item.jpg)
+![alt](https://raw.githubusercontent.com/dbpiper/TODO/master/Design/Images/Add_Item_Screen.jpg "Add Item Screen")
