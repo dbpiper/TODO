@@ -35,3 +35,16 @@ Underneath the actionbar is a editable text-field for adding the description
 of the todo item.
 
 ![alt](https://raw.githubusercontent.com/dbpiper/TODO/master/Design/Images/Add_Item_Screen.jpg "Add Item Screen")
+
+### Edit Item Screen
+The edit item screen is shown below.
+
+The actionbar has a back button which is used to navigate back to the
+Main Screen. The actionbar also has a title which is the field with
+the name of the item, filled in in the add item screen in the actionbar
+editable text field.
+
+Underneath the actionbar is a editable text-field for editing the description
+of the todo item.
+
+![alt](https://raw.githubusercontent.com/dbpiper/TODO/master/Design/Images/Edit_Item_Screen.jpg "Edit Item Screen")
