@@ -2,8 +2,8 @@
 # UI Designs
 The UI design has the following goals:
 * 1-2 taps for most frequent activites
-* Familiar (to desktop users) where possible
 * Intuitive
+* Familiar (to users of Android apps)
 
 The design proposals described below attempt to meet all these goals.
 
