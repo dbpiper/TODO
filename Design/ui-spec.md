@@ -4,6 +4,7 @@ The UI design has the following goals:
 * 1-2 taps for most frequent activites
 * Familiar (to desktop users) where possible
 * Intuitive
+
 The design proposals described below attempt to meet all these goals.
 
 ## UI Design V1.0
