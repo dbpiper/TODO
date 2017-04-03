@@ -1,5 +1,6 @@
 package com.dbpiper.todo;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,9 +47,9 @@ public class MainActivityFragment extends Fragment {
         todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(getActivity(), String.valueOf(parent.getItemAtPosition(position)),
-                        Toast.LENGTH_LONG).show();
+                // TODO: This should be launching EditItem not AddItem
+//                Intent myIntent = new Intent(getActivity(), AddItem.class);
+//                getActivity().startActivity(myIntent);
             }
         });
 
