@@ -47,8 +47,8 @@ public class MainActivityFragment extends Fragment {
         todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO: This should be launching EditItem not AddItem
-//                Intent myIntent = new Intent(getActivity(), AddItem.class);
+                // TODO: This should be launching EditItem not AddItemActivity
+//                Intent myIntent = new Intent(getActivity(), AddItemActivity.class);
 //                getActivity().startActivity(myIntent);
             }
         });
