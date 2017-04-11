@@ -11,12 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.greenrobot.greendao.query.Query;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+
+    private TodoItemDao todoItemDao;
+    private Query<TodoItem> todoItemQuery;
 
     public MainActivityFragment() {
     }
@@ -53,6 +59,24 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        setupDao();
+
         return view;
+    }
+
+    private void setupDao() {
+        // get the note DAO
+        DaoSession daoSession = ((App) this.getActivity().getApplication()).getDaoSession();
+        todoItemDao = daoSession.getTodoItemDao();
+
+        // query all items, sorted a-z by their title
+        todoItemQuery = todoItemDao.queryBuilder().orderAsc(TodoItemDao.Properties.Title).build();
+        updateTodoList();
+    }
+
+    private void updateTodoList() {
+        List<TodoItem> todoItems = todoItemQuery.list();
+//        notesAdapter.setNotes(notes);
+        // TODO: set list of items to this list
     }
 }
