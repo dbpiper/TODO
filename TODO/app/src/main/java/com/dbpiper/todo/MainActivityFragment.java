@@ -74,7 +74,6 @@ public class MainActivityFragment extends Fragment {
 
     private void updateTodoList() {
         List<TodoItem> todoItems = todoItemQuery.list();
-        Log.d("todoItems", todoItems.get(0).getTitle());
         for(TodoItem todoItem : todoItems) {
             this.todoList.add(todoItem.getTitle());
         }

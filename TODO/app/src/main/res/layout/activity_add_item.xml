@@ -17,6 +17,7 @@ tools:context="com.dbpiper.todo.AddItemActivity">
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay">
         <EditText
+            android:id="@+id/editTextTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.v7.widget.Toolbar>

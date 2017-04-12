@@ -4,6 +4,7 @@ import android.app.Application;
 
 import org.greenrobot.greendao.database.Database;
 
+
 /**
  * Created by suerg on 4/11/2017.
  */
@@ -17,7 +18,12 @@ public class App extends Application {
 
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "todo-db");
         Database db = helper.getWritableDb();
-        daoSession = new DaoMaster(db).newSession();
+        DaoMaster daoMaster = new DaoMaster(db);
+
+        daoMaster.dropAllTables(db, true);
+        daoMaster.createAllTables(db, true);
+
+        daoSession = daoMaster.newSession();
     }
 
     public DaoSession getDaoSession() {

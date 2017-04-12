@@ -5,6 +5,7 @@
     tools:context="com.dbpiper.todo.AddItemFragment">
 
     <EditText
+        android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
