@@ -3,6 +3,7 @@ package com.dbpiper.todo;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class MainActivityFragment extends Fragment {
 
     private TodoItemDao todoItemDao;
     private Query<TodoItem> todoItemQuery;
+    private List<String> todoList;
+
 
     public MainActivityFragment() {
     }
@@ -34,21 +37,7 @@ public class MainActivityFragment extends Fragment {
 
         ListView todoListView = (ListView)view
                 .findViewById(R.id.todoListView);
-        ArrayList<String> todoList = new ArrayList<>();
-
-        todoList.add("Laundry");
-        todoList.add("Dishes");
-        todoList.add("Programming");
-
-
-        ArrayAdapter<String> todoAdapter = new ArrayAdapter<>(
-                this.getContext(), R.layout.todo_list_item,
-                todoList
-        );
-
-        if (todoListView != null) {
-            todoListView.setAdapter(todoAdapter);
-        }
+        this.todoList = new ArrayList<>();
 
         todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -60,6 +49,15 @@ public class MainActivityFragment extends Fragment {
         });
 
         setupDao();
+
+        ArrayAdapter<String> todoAdapter = new ArrayAdapter<>(
+                this.getContext(), R.layout.todo_list_item,
+                this.todoList
+        );
+
+        if (todoListView != null) {
+            todoListView.setAdapter(todoAdapter);
+        }
 
         return view;
     }
@@ -76,6 +74,10 @@ public class MainActivityFragment extends Fragment {
 
     private void updateTodoList() {
         List<TodoItem> todoItems = todoItemQuery.list();
+        Log.d("todoItems", todoItems.get(0).getTitle());
+        for(TodoItem todoItem : todoItems) {
+            this.todoList.add(todoItem.getTitle());
+        }
 //        notesAdapter.setNotes(notes);
         // TODO: set list of items to this list
     }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 public class AddItemActivity extends AppCompatActivity {
+    private TodoItemDao todoItemDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +18,18 @@ public class AddItemActivity extends AppCompatActivity {
         Toolbar toolbarAddItem = (Toolbar) findViewById(R.id.toolbarAddItem);
         setSupportActionBar(toolbarAddItem);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        DaoSession daoSession = ((App) this.getApplication()).getDaoSession();
+        todoItemDao = daoSession.getTodoItemDao();
     }
 
     public void handleBackPress() {
         Log.d("onbackpressec", "back pressed");
+        
+        TodoItem todoItem = new TodoItem();
+        todoItem.setTitle("hello");
+        todoItem.setDescription("i have a description");
+        todoItemDao.insert(todoItem);
     }
 
     @Override
