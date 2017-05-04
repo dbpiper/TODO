@@ -1,14 +1,27 @@
 package com.dbpiper.todo;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class AddItemFragment extends Fragment{
+    private static final String DIALOG_DATE = "DialogDate";
+
     private TodoItemDao mTodoItemDao;
+    private Button mDateButton;
+    private TextView mDueDate;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -18,6 +31,24 @@ public class AddItemFragment extends Fragment{
 
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         mTodoItemDao = daoSession.getTodoItemDao();
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = df.format(c.getTime());
+        mDueDate = (TextView) view.findViewById(R.id.textViewDueDate);
+        mDueDate.setText(formattedDate);
+
+
+        mDateButton = (Button) view.findViewById(R.id.buttonDate);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+            public void onClick(View v) {
+               FragmentManager manager = getActivity().getFragmentManager();
+               DatePickerFragment dialog = new DatePickerFragment();
+               dialog.show(manager, DIALOG_DATE);
+           }
+        });
+
 
         return view;
     }
