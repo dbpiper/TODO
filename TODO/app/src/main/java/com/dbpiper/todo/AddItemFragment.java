@@ -14,6 +14,7 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddItemFragment extends Fragment{
     private static final String DIALOG_DATE = "DialogDate";
@@ -22,6 +23,16 @@ public class AddItemFragment extends Fragment{
     private Button mDateButton;
     private TextView mDueDate;
 
+
+    private Date getDate() {
+
+        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            return df.parse(mDateButton.getText().toString());
+        } catch (Exception e) {
+            return new Date();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,8 +44,8 @@ public class AddItemFragment extends Fragment{
         mTodoItemDao = daoSession.getTodoItemDao();
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        String formattedDate = df.format(c.getTime());
+        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        final String formattedDate = df.format(c.getTime());
         mDueDate = (TextView) view.findViewById(R.id.textViewDueDate);
         mDueDate.setText(formattedDate);
 
@@ -44,7 +55,7 @@ public class AddItemFragment extends Fragment{
            @Override
             public void onClick(View v) {
                FragmentManager manager = getActivity().getFragmentManager();
-               DatePickerFragment dialog = new DatePickerFragment();
+               DatePickerFragment dialog = DatePickerFragment.newInstance(getDate());
                dialog.show(manager, DIALOG_DATE);
            }
         });
