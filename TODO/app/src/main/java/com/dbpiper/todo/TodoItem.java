@@ -9,6 +9,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 
+import java.sql.Time;
 import java.util.Date;
 
 @Entity
@@ -21,16 +22,14 @@ public class TodoItem {
 
     private String description;
 
-    private Date due;
+    private Date dueDate;
 
-    // TODO: figure out best way to store datetime
-
-    @Generated(hash = 108964900)
-    public TodoItem(Long id, @NotNull String title, String description, Date due) {
+    @Generated(hash = 1617085322)
+    public TodoItem(Long id, @NotNull String title, String description, Date dueDate) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.due = due;
+        this.dueDate = dueDate;
     }
 
 
@@ -63,11 +62,12 @@ public class TodoItem {
         this.description = description;
     }
 
-    public Date getDue() {
-        return due;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setDue(Date due) {
-        this.due = due;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 }
+

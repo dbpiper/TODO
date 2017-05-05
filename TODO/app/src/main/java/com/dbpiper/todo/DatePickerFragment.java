@@ -1,21 +1,28 @@
 package com.dbpiper.todo;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by suerg on 5/4/2017.
  */
 
-public class DatePickerFragment extends DialogFragment {
+public class DatePickerFragment extends android.support.v4.app.DialogFragment {
+    public static final String EXTRA_DATE =
+            "com.dbpiper.todo.date";
     private static final String ARG_DATE = "date";
 
     private DatePicker mDatePicker;
@@ -48,7 +55,30 @@ public class DatePickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
             .setView(v)
             .setTitle(R.string.date_picker_title)
-            .setPositiveButton(android.R.string.ok, null)
+            .setPositiveButton(android.R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int year = mDatePicker.getYear();
+                            int month = mDatePicker.getMonth();
+                            int day = mDatePicker.getDayOfMonth();
+                            Date date = new GregorianCalendar(year, month, day).getTime();
+                            sendResult(Activity.RESULT_OK, date);
+                        }
+                    }
+            )
             .create();
+    }
+
+    private void sendResult(int resultCode, Date date) {
+        if (getTargetFragment() == null) {
+            return;
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DATE, date);
+
+        getTargetFragment()
+                .onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }

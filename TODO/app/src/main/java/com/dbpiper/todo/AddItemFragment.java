@@ -1,16 +1,19 @@
 package com.dbpiper.todo;
 
-import android.app.FragmentManager;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +21,7 @@ import java.util.Date;
 
 public class AddItemFragment extends Fragment{
     private static final String DIALOG_DATE = "DialogDate";
+    private static final int REQUEST_DATE = 0;
 
     private TodoItemDao mTodoItemDao;
     private Button mDateButton;
@@ -28,10 +32,16 @@ public class AddItemFragment extends Fragment{
 
         final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         try {
-            return df.parse(mDateButton.getText().toString());
+            return df.parse(mDueDate.getText().toString());
         } catch (Exception e) {
             return new Date();
         }
+    }
+
+    private void setDate(Date date) {
+        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        final String formattedDate = df.format(date);
+        mDueDate.setText(formattedDate);
     }
 
     @Override
@@ -44,24 +54,36 @@ public class AddItemFragment extends Fragment{
         mTodoItemDao = daoSession.getTodoItemDao();
 
         Calendar c = Calendar.getInstance();
-        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        final String formattedDate = df.format(c.getTime());
         mDueDate = (TextView) view.findViewById(R.id.textViewDueDate);
-        mDueDate.setText(formattedDate);
+        setDate(c.getTime());
 
 
         mDateButton = (Button) view.findViewById(R.id.buttonDate);
         mDateButton.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View v) {
-               FragmentManager manager = getActivity().getFragmentManager();
+               FragmentManager manager = getFragmentManager();
                DatePickerFragment dialog = DatePickerFragment.newInstance(getDate());
+               dialog.setTargetFragment(AddItemFragment.this, REQUEST_DATE);
                dialog.show(manager, DIALOG_DATE);
            }
         });
 
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data
+                    .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            setDate(date);
+        }
     }
 
     // handles the back pressed functionality,
@@ -75,6 +97,7 @@ public class AddItemFragment extends Fragment{
         TodoItem todoItem = new TodoItem();
         todoItem.setTitle(title);
         todoItem.setDescription(description);
+        todoItem.setDueDate(getDate());
         mTodoItemDao.insert(todoItem);
     }
 
