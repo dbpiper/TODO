@@ -24,7 +24,7 @@ public class MainActivityFragment extends Fragment {
 
     private TodoItemDao todoItemDao;
     private Query<TodoItem> todoItemQuery;
-    private List<String> todoList;
+    private List<TodoItem> todoList;
 
 
     public MainActivityFragment() {
@@ -50,7 +50,7 @@ public class MainActivityFragment extends Fragment {
 
         setupDao();
 
-        ArrayAdapter<String> todoAdapter = new ArrayAdapter<>(
+        TodoItemAdapter todoAdapter = new TodoItemAdapter(
                 this.getContext(), R.layout.todo_list_item,
                 this.todoList
         );
@@ -75,7 +75,7 @@ public class MainActivityFragment extends Fragment {
     private void updateTodoList() {
         List<TodoItem> todoItems = todoItemQuery.list();
         for(TodoItem todoItem : todoItems) {
-            this.todoList.add(todoItem.getTitle());
+            this.todoList.add(todoItem);
         }
 //        notesAdapter.setNotes(notes);
         // TODO: set list of items to this list
