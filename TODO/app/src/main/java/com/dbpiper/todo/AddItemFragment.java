@@ -144,11 +144,13 @@ public class AddItemFragment extends Fragment{
         String description = ((EditText) getActivity().findViewById(R.id.editTextDescription))
                 .getText().toString();
 
-        TodoItem todoItem = new TodoItem();
-        todoItem.setTitle(title);
-        todoItem.setDescription(description);
-        todoItem.setDueDate(getDate());
-        mTodoItemDao.insert(todoItem);
+        if (title.length() != 0) {
+            TodoItem todoItem = new TodoItem();
+            todoItem.setTitle(title);
+            todoItem.setDescription(description);
+            todoItem.setDueDate(getDate());
+            mTodoItemDao.insert(todoItem);
+        }
     }
 
 }
