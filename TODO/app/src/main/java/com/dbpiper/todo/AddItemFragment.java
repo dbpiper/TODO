@@ -21,11 +21,15 @@ import java.util.Date;
 
 public class AddItemFragment extends Fragment{
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_TIME = "DialogTime";
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_TIME = 1;
 
     private TodoItemDao mTodoItemDao;
     private Button mDateButton;
     private TextView mDueDate;
+    private Button mTimeButton;
+    private TextView mDueTime;
 
 
     private Date getDate() {
@@ -44,6 +48,13 @@ public class AddItemFragment extends Fragment{
         mDueDate.setText(formattedDate);
     }
 
+    private void setTime(Date date) {
+        final SimpleDateFormat df = new SimpleDateFormat("h:m");
+        final String formattedDate = df.format(date);
+        mDueTime.setText(formattedDate);
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,7 +66,9 @@ public class AddItemFragment extends Fragment{
 
         Calendar c = Calendar.getInstance();
         mDueDate = (TextView) view.findViewById(R.id.textViewDueDate);
+        mDueTime = (TextView) view.findViewById(R.id.textViewDueTime);
         setDate(c.getTime());
+        setTime(c.getTime());
 
 
         mDateButton = (Button) view.findViewById(R.id.buttonDate);
@@ -69,6 +82,15 @@ public class AddItemFragment extends Fragment{
            }
         });
 
+        mTimeButton = (Button) view.findViewById(R.id.buttonTime);
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                TimePickerFragment dialog = new TimePickerFragment();
+                dialog.show(manager, DIALOG_TIME);
+            }
+        });
 
         return view;
     }
