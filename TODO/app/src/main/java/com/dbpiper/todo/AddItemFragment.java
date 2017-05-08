@@ -42,6 +42,15 @@ public class AddItemFragment extends Fragment{
         }
     }
 
+    private Date getTime() {
+        final SimpleDateFormat df = new SimpleDateFormat("h:m");
+        try {
+            return df.parse(mDueTime.getText().toString());
+        } catch (Exception e) {
+            return new Date();
+        }
+    }
+
     private void setDate(Date date) {
         final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         final String formattedDate = df.format(date);
@@ -49,8 +58,19 @@ public class AddItemFragment extends Fragment{
     }
 
     private void setTime(Date date) {
-        final SimpleDateFormat df = new SimpleDateFormat("h:m");
-        final String formattedDate = df.format(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int am_pm = calendar.get(Calendar.AM_PM);
+
+        final SimpleDateFormat df = new SimpleDateFormat("h:mm");
+        String formattedDate = df.format(date);
+
+        if (am_pm == Calendar.AM) {
+            formattedDate += " AM";
+        } else {
+            formattedDate += " PM";
+        }
+
         mDueTime.setText(formattedDate);
 
     }
@@ -87,7 +107,8 @@ public class AddItemFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                TimePickerFragment dialog = new TimePickerFragment();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(getTime());
+                dialog.setTargetFragment(AddItemFragment.this, REQUEST_TIME);
                 dialog.show(manager, DIALOG_TIME);
             }
         });
@@ -105,6 +126,13 @@ public class AddItemFragment extends Fragment{
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             setDate(date);
+        }
+
+        if (requestCode == REQUEST_TIME) {
+
+            Date time = (Date) data
+                    .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            setTime(time);
         }
     }
 
