@@ -89,64 +89,14 @@ public class AddItemFragment extends Fragment{
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         mTodoItemDao = daoSession.getTodoItemDao();
 
-        Calendar c = Calendar.getInstance();
-        mDueDate = (TextView) view.findViewById(R.id.textViewDueDate);
-        mDueTime = (TextView) view.findViewById(R.id.textViewDueTime);
-        setDate(c.getTime());
-        setTime(c.getTime());
-
-        mSelectedRows = new boolean[2];
-        mSelectedRows[0] = false;
-        mSelectedRows[1] = false;
-
-
-        mDateButton = (Button) view.findViewById(R.id.buttonDate);
-        mDateButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-            public void onClick(View v) {
-               FragmentManager manager = getFragmentManager();
-               DatePickerFragment dialog = DatePickerFragment.newInstance(getDate());
-               dialog.setTargetFragment(AddItemFragment.this, REQUEST_DATE);
-               dialog.show(manager, DIALOG_DATE);
-           }
-        });
-
-        mTimeButton = (Button) view.findViewById(R.id.buttonTime);
-        mTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                TimePickerFragment dialog = TimePickerFragment.newInstance(getTime());
-                dialog.setTargetFragment(AddItemFragment.this, REQUEST_TIME);
-                dialog.show(manager, DIALOG_TIME);
-            }
-        });
-
-        TableRow tableRowDueDate = (TableRow) view.findViewById(R.id.tableRowDueDate);
-        TableRow tableRowDueTime = (TableRow) view.findViewById(R.id.tableRowDueTime);
-
-        tableRowDueDate.setTag(0);
-        tableRowDueTime.setTag(1);
-
-        mTableRowClickHandler = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int row = (int) v.getTag();
-
-                if (!mSelectedRows[row]) {
-                    v.setBackgroundColor(Color.GRAY);
-                } else {
-                    v.setBackgroundColor(Color.WHITE);
-                }
-                mSelectedRows[row] = !mSelectedRows[row];
-            }
-        };
-
-        tableRowDueDate.setOnClickListener(mTableRowClickHandler);
-        tableRowDueTime.setOnClickListener(mTableRowClickHandler);
+        initDueDateAndTime(view);
+        initSelectedDueRows();
+        initDueButtons(view);
+        initDueTable(view);
 
         return view;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,9 +135,67 @@ public class AddItemFragment extends Fragment{
         }
     }
 
-    public void clickHandleRow(View v) {
-        Toast.makeText(getActivity(), "This is my Toast message!",
-                Toast.LENGTH_LONG).show();
+    private void initDueDateAndTime(View view) {
+        Calendar c = Calendar.getInstance();
+        mDueDate = (TextView) view.findViewById(R.id.textViewDueDate);
+        mDueTime = (TextView) view.findViewById(R.id.textViewDueTime);
+        setDate(c.getTime());
+        setTime(c.getTime());
+    }
+
+    private void initSelectedDueRows() {
+        mSelectedRows = new boolean[2];
+        mSelectedRows[0] = false;
+        mSelectedRows[1] = false;
+    }
+
+    private void initDueButtons(View view) {
+        mDateButton = (Button) view.findViewById(R.id.buttonDate);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(getDate());
+                dialog.setTargetFragment(AddItemFragment.this, REQUEST_DATE);
+                dialog.show(manager, DIALOG_DATE);
+            }
+        });
+
+        mTimeButton = (Button) view.findViewById(R.id.buttonTime);
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(getTime());
+                dialog.setTargetFragment(AddItemFragment.this, REQUEST_TIME);
+                dialog.show(manager, DIALOG_TIME);
+            }
+        });
+    }
+
+    private void initDueTable(View view) {
+        TableRow tableRowDueDate = (TableRow) view.findViewById(R.id.tableRowDueDate);
+        TableRow tableRowDueTime = (TableRow) view.findViewById(R.id.tableRowDueTime);
+
+        tableRowDueDate.setTag(0);
+        tableRowDueTime.setTag(1);
+
+        mTableRowClickHandler = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int row = (int) v.getTag();
+
+                if (!mSelectedRows[row]) {
+                    v.setBackgroundColor(Color.GRAY);
+                } else {
+                    v.setBackgroundColor(Color.WHITE);
+                }
+                mSelectedRows[row] = !mSelectedRows[row];
+            }
+        };
+
+        tableRowDueDate.setOnClickListener(mTableRowClickHandler);
+        tableRowDueTime.setOnClickListener(mTableRowClickHandler);
     }
 
 }
