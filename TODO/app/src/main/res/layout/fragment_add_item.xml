@@ -31,11 +31,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
-            android:id="@+id/tableRow2"
+            android:id="@+id/tableRowDueDate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:clickable="true"
             app:layout_constraintLeft_toRightOf="@+id/textViewDueLabel"
             app:layout_constraintRight_toRightOf="parent"
             tools:layout_editor_absoluteY="44dp">
@@ -63,11 +64,12 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow3"
+            android:id="@+id/tableRowDueTime"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:clickable="true"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toRightOf="@+id/textViewDueLabel"
             app:layout_constraintRight_toRightOf="parent"
@@ -77,9 +79,8 @@
                 android:id="@+id/textViewDueTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 android:gravity="center"
                 android:text="TextView"
                 app:layout_constraintLeft_toLeftOf="@+id/textViewDueDate"

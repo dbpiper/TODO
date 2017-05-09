@@ -2,6 +2,7 @@ package com.dbpiper.todo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,9 @@ public class AddItemFragment extends Fragment{
     private TextView mDueDate;
     private Button mTimeButton;
     private TextView mDueTime;
+
+    private View.OnClickListener mTableRowClickHandler;
+    private boolean[] mSelectedRows;
 
 
     private Date getDate() {
@@ -90,6 +95,10 @@ public class AddItemFragment extends Fragment{
         setDate(c.getTime());
         setTime(c.getTime());
 
+        mSelectedRows = new boolean[2];
+        mSelectedRows[0] = false;
+        mSelectedRows[1] = false;
+
 
         mDateButton = (Button) view.findViewById(R.id.buttonDate);
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +121,29 @@ public class AddItemFragment extends Fragment{
                 dialog.show(manager, DIALOG_TIME);
             }
         });
+
+        TableRow tableRowDueDate = (TableRow) view.findViewById(R.id.tableRowDueDate);
+        TableRow tableRowDueTime = (TableRow) view.findViewById(R.id.tableRowDueTime);
+
+        tableRowDueDate.setTag(0);
+        tableRowDueTime.setTag(1);
+
+        mTableRowClickHandler = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int row = (int) v.getTag();
+
+                if (!mSelectedRows[row]) {
+                    v.setBackgroundColor(Color.GRAY);
+                } else {
+                    v.setBackgroundColor(Color.WHITE);
+                }
+                mSelectedRows[row] = !mSelectedRows[row];
+            }
+        };
+
+        tableRowDueDate.setOnClickListener(mTableRowClickHandler);
+        tableRowDueTime.setOnClickListener(mTableRowClickHandler);
 
         return view;
     }
@@ -151,6 +183,11 @@ public class AddItemFragment extends Fragment{
             todoItem.setDueDate(getDate());
             mTodoItemDao.insert(todoItem);
         }
+    }
+
+    public void clickHandleRow(View v) {
+        Toast.makeText(getActivity(), "This is my Toast message!",
+                Toast.LENGTH_LONG).show();
     }
 
 }
