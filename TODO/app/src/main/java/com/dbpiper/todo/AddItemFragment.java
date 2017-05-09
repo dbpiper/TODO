@@ -130,7 +130,9 @@ public class AddItemFragment extends Fragment{
             TodoItem todoItem = new TodoItem();
             todoItem.setTitle(title);
             todoItem.setDescription(description);
-            todoItem.setDueDate(getDate());
+            if (mSelectedRows[0]) { //only add date if it is selected
+                todoItem.setDueDate(getDate());
+            }
             mTodoItemDao.insert(todoItem);
         }
     }

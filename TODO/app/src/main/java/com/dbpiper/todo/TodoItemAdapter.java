@@ -48,9 +48,11 @@ public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
         TodoItem todoItem = data.get(position);
         holder.title.setText(todoItem.getTitle());
 
-        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        final String formattedDate = df.format(todoItem.getDueDate());
-        holder.dueDate.setText(formattedDate);
+        if (todoItem.getDueDate() != null) {
+            final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            final String formattedDate = df.format(todoItem.getDueDate());
+            holder.dueDate.setText(formattedDate);
+        }
 
         return row;
     }
