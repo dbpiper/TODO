@@ -178,19 +178,21 @@ public class AddItemFragment extends Fragment{
         TableRow tableRowDueTime = (TableRow) view.findViewById(R.id.tableRowDueTime);
 
         tableRowDueDate.setTag(0);
+        tableRowDueDate.setBackgroundColor(Color.GRAY); // default them to not selected
         tableRowDueTime.setTag(1);
+        tableRowDueTime.setBackgroundColor(Color.GRAY);
 
         mTableRowClickHandler = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int row = (int) v.getTag();
 
+                mSelectedRows[row] = !mSelectedRows[row];
                 if (!mSelectedRows[row]) {
                     v.setBackgroundColor(Color.GRAY);
                 } else {
                     v.setBackgroundColor(Color.WHITE);
                 }
-                mSelectedRows[row] = !mSelectedRows[row];
             }
         };
 
