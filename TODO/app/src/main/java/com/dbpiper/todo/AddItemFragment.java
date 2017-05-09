@@ -37,48 +37,6 @@ public class AddItemFragment extends Fragment{
     private boolean[] mSelectedRows;
 
 
-    private Date getDate() {
-
-        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        try {
-            return df.parse(mDueDate.getText().toString());
-        } catch (Exception e) {
-            return new Date();
-        }
-    }
-
-    private Date getTime() {
-        final SimpleDateFormat df = new SimpleDateFormat("h:m");
-        try {
-            return df.parse(mDueTime.getText().toString());
-        } catch (Exception e) {
-            return new Date();
-        }
-    }
-
-    private void setDate(Date date) {
-        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        final String formattedDate = df.format(date);
-        mDueDate.setText(formattedDate);
-    }
-
-    private void setTime(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int am_pm = calendar.get(Calendar.AM_PM);
-
-        final SimpleDateFormat df = new SimpleDateFormat("h:mm");
-        String formattedDate = df.format(date);
-
-        if (am_pm == Calendar.AM) {
-            formattedDate += " AM";
-        } else {
-            formattedDate += " PM";
-        }
-
-        mDueTime.setText(formattedDate);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,8 +88,11 @@ public class AddItemFragment extends Fragment{
             TodoItem todoItem = new TodoItem();
             todoItem.setTitle(title);
             todoItem.setDescription(description);
-            if (mSelectedRows[0]) { //only add date if it is selected
-                todoItem.setDueDate(getDate());
+
+            Date dateAndTime = getDateAndTime();
+
+            if (dateAndTime != null) { //only add date if it is selected
+                todoItem.setDueDate(dateAndTime);
             }
             mTodoItemDao.insert(todoItem);
         }
@@ -202,4 +163,64 @@ public class AddItemFragment extends Fragment{
         tableRowDueTime.setOnClickListener(mTableRowClickHandler);
     }
 
+    private Date getDateAndTime() {
+        Date date = getDate(); //contains month, day, year
+        Date time = getTime(); //contains hour and minute
+
+        Calendar calendar = Calendar.getInstance();
+        if (mSelectedRows[0]) { //only add date if it is selected
+            calendar.setTime(date);
+        }
+        if (mSelectedRows[1]) {
+            calendar.set(Calendar.HOUR, time.getHours());
+            calendar.set(Calendar.MINUTE, time.getMinutes());
+        }
+        if (!mSelectedRows[0] && !mSelectedRows[1]) {
+            return null;
+        }
+        return calendar.getTime();
+    }
+
+    private Date getDate() {
+
+        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            return df.parse(mDueDate.getText().toString());
+        } catch (Exception e) {
+            return new Date();
+        }
+    }
+
+    private Date getTime() {
+        final SimpleDateFormat df = new SimpleDateFormat("h:m");
+        try {
+            return df.parse(mDueTime.getText().toString());
+        } catch (Exception e) {
+            return new Date();
+        }
+    }
+
+    private void setDate(Date date) {
+        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        final String formattedDate = df.format(date);
+        mDueDate.setText(formattedDate);
+    }
+
+    private void setTime(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int am_pm = calendar.get(Calendar.AM_PM);
+
+        final SimpleDateFormat df = new SimpleDateFormat("h:mm");
+        String formattedDate = df.format(date);
+
+        if (am_pm == Calendar.AM) {
+            formattedDate += " AM";
+        } else {
+            formattedDate += " PM";
+        }
+
+        mDueTime.setText(formattedDate);
+
+    }
 }
