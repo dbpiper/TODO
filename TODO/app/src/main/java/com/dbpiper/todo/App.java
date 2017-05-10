@@ -20,8 +20,8 @@ public class App extends Application {
         Database db = helper.getWritableDb();
         DaoMaster daoMaster = new DaoMaster(db);
 
-        daoMaster.dropAllTables(db, true);
-        daoMaster.createAllTables(db, true);
+//        daoMaster.dropAllTables(db, true);
+//        daoMaster.createAllTables(db, true);
 
         daoSession = daoMaster.newSession();
     }
