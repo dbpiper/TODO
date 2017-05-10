@@ -16,6 +16,5 @@
         android:id="@+id/action_archive_page"
         android:orderInCategory="100"
         android:title="@string/action_archive_page"
-        app:ico_icon="gmd-plus-circle"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>

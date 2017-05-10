@@ -24,12 +24,16 @@ public class TodoItem {
 
     private Date dueDate;
 
-    @Generated(hash = 1617085322)
-    public TodoItem(Long id, @NotNull String title, String description, Date dueDate) {
+    private boolean archived;
+
+    @Generated(hash = 33245341)
+    public TodoItem(Long id, @NotNull String title, String description, Date dueDate,
+            boolean archived) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
+        this.archived = archived;
     }
 
 
@@ -68,6 +72,14 @@ public class TodoItem {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public boolean getArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 }
 

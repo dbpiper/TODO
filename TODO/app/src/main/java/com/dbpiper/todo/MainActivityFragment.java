@@ -27,7 +27,7 @@ public class MainActivityFragment extends Fragment {
     private TodoItemDao todoItemDao;
     private Query<TodoItem> todoItemQuery;
     private List<TodoItem> todoList;
-
+    private TodoItemAdapter mTodoAdapter;
 
     public MainActivityFragment() {
     }
@@ -58,35 +58,38 @@ public class MainActivityFragment extends Fragment {
 
         setupDao();
 
-        TodoItemAdapter todoAdapter = new TodoItemAdapter(
+        DaoSession daoSession = ((App) this.getActivity().getApplication()).getDaoSession();
+
+        mTodoAdapter = new TodoItemAdapter(
                 this.getContext(), R.layout.todo_list_item,
-                this.todoList
+                this.todoList, daoSession
         );
 
         if (todoListView != null) {
-            todoListView.setAdapter(todoAdapter);
+            todoListView.setAdapter(mTodoAdapter);
         }
 
         return view;
     }
 
     private void setupDao() {
-        // get the note DAO
+        // get the DAO
         DaoSession daoSession = ((App) this.getActivity().getApplication()).getDaoSession();
         todoItemDao = daoSession.getTodoItemDao();
 
         // query all items, sorted a-z by their title
-        todoItemQuery = todoItemDao.queryBuilder().orderAsc(TodoItemDao.Properties.Title).build();
+        todoItemQuery = todoItemDao.queryBuilder()
+                .where(TodoItemDao.Properties.Archived.eq(false))
+                .orderAsc(TodoItemDao.Properties.Title).build();
         updateTodoList();
     }
 
     private void updateTodoList() {
+        this.todoList.clear();
         List<TodoItem> todoItems = todoItemQuery.list();
-        for(TodoItem todoItem : todoItems) {
+        for (TodoItem todoItem : todoItems) {
             this.todoList.add(todoItem);
         }
-//        notesAdapter.setNotes(notes);
-        // TODO: set list of items to this list
     }
 
     @Override
@@ -102,7 +105,8 @@ public class MainActivityFragment extends Fragment {
 //        }
 
         if (id == R.id.action_archive) {
-            Toast.makeText(getActivity(), "Archive", Toast.LENGTH_LONG).show();
+            updateTodoList(); // the archive flag is already set by the listview checkbox
+            mTodoAdapter.notifyDataSetChanged();
         }
 
         return super.onOptionsItemSelected(item);

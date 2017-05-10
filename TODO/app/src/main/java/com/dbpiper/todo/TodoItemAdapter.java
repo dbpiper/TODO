@@ -6,7 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import org.greenrobot.greendao.query.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,16 +23,21 @@ public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
     Context context;
     int layoutResourceId;
     List<TodoItem> data;
+    DaoSession daoSession;
+    TodoItemDao todoItemDao;
 
-    public TodoItemAdapter(Context context, int layoutResourceId, List<TodoItem> data) {
+    public TodoItemAdapter(Context context, int layoutResourceId, List<TodoItem> data,
+                           DaoSession daoSession) {
         super(context, layoutResourceId, data);
         this.context = context;
         this.layoutResourceId = layoutResourceId;
         this.data = data;
+        this.daoSession = daoSession;
+        this.todoItemDao = daoSession.getTodoItemDao();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         TodoItemHolder holder = null;
 
@@ -39,13 +48,14 @@ public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
             holder = new TodoItemHolder();
             holder.title = (TextView)row.findViewById(R.id.textViewTitle);
             holder.dueDate = (TextView)row.findViewById(R.id.textViewDueDate);
+            holder.checkBoxArchived = (CheckBox)row.findViewById(R.id.checkBoxArchived);
 
             row.setTag(holder);
         } else {
             holder = (TodoItemHolder)row.getTag();
         }
 
-        TodoItem todoItem = data.get(position);
+        final TodoItem todoItem = data.get(position);
         holder.title.setText(todoItem.getTitle());
 
         if (todoItem.getDueDate() != null) {
@@ -54,6 +64,21 @@ public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
             holder.dueDate.setText(formattedDate);
         }
 
+        holder.checkBoxArchived.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Query<TodoItem> todoItemQuery = todoItemDao.queryBuilder()
+                        .where(TodoItemDao.Properties.Id.eq(todoItem.getId()))
+                        .orderAsc(TodoItemDao.Properties.Title).build();
+                List<TodoItem> todoItems = todoItemQuery.list();
+                for(TodoItem todoItem : todoItems) {
+                    todoItem.setArchived(isChecked);
+                    todoItemDao.update(todoItem);
+                }
+
+            }
+        });
+
         return row;
     }
 
@@ -61,5 +86,6 @@ public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
     {
         TextView title;
         TextView dueDate;
+        CheckBox checkBoxArchived;
     }
 }
