@@ -32,5 +32,7 @@
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         />
 </RelativeLayout>
